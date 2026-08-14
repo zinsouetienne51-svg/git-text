@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faire un financement — Több Segítséget</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 10c-6 0-10 5-10 10 0 9 10 15 20 22 10-7 20-13 20-22 0-5-4-10-10-10-4 0-7.5 2.2-10 6-2.5-3.8-6-6-10-6z" fill="#0F2A47"/>
+        <circle cx="34" cy="12" r="7" fill="#C89B3C" opacity="0.9"/>
+      </svg>
+      <span class="brand-text"><span class="top">több</span><span class="bottom">segítséget</span></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" data-i18n="nav_home">Accueil</a>
+      <a href="apropos.html" data-i18n="nav_about">À propos</a>
+      <a href="demander-aide.html" data-i18n="nav_ask">Demander une aide</a>
+      <a href="financement.html" class="active" data-i18n="nav_fund">Faire un financement</a>
+      <a href="projets.html" data-i18n="nav_projects">Projets</a>
+      <a href="temoignages.html" data-i18n="nav_testimonials">Témoignages</a>
+      <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+      <a href="contact.html" data-i18n="nav_contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="dashboard.html" class="btn btn-gold btn-sm" data-i18n="nav_account">Espace personnel</a>
+      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="breadcrumb"><span data-i18n="nav_home">Accueil</span> / <span data-i18n="nav_fund">Faire un financement</span></span>
+    <h1 data-i18n="ph_fund_title">Faire un financement</h1>
+    <p data-i18n="ph_fund_sub">Chaque contribution, quel que soit son montant, aide une personne ou une entreprise à rebondir.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="form-shell">
+      <aside class="form-side">
+        <h3 data-i18n="ph_fund_title">Soutenir un projet</h3>
+        <p data-i18n="fund_side_sub">Choisissez un montant, un projet à soutenir, puis validez votre financement en toute sécurité.</p>
+        <ul class="form-steps">
+          <li class="active"><span class="num">1</span> <span data-i18n="fund_step1">Montant & projet</span></li>
+          <li><span class="num">2</span> <span data-i18n="fund_step2">Vos informations</span></li>
+          <li><span class="num">3</span> <span data-i18n="fund_step3">Paiement</span></li>
+          <li><span class="num">4</span> <span data-i18n="fund_step4">Confirmation</span></li>
+        </ul>
+      </aside>
+
+      <div class="form-main">
+        <h3 data-i18n="fund_step1">Montant & projet</h3>
+        <div id="donError" style="display:none;background:#fdecec;color:#9c2b2b;padding:10px 14px;border-radius:8px;font-size:0.85rem;margin-bottom:16px;"></div>
+        <div id="donSuccess" style="display:none;background:#e9f4ee;color:#2c6b4a;padding:10px 14px;border-radius:8px;font-size:0.85rem;margin-bottom:16px;"></div>
+        <form id="donForm">
+          <div class="field-grid">
+            <div class="field full">
+              <label for="projet" data-i18n="lbl_project">Projet à soutenir <span class="req">*</span></label>
+              <select id="projet" name="projet" required>
+                <option value="" data-i18n="opt_select_project">Sélectionner un projet</option>
+                <option value="1" data-i18n="proj1_name">Soutien aux petites entreprises</option>
+                <option value="2" data-i18n="proj2_name">Aide aux familles en difficulté</option>
+                <option value="3" data-i18n="proj3_name">Relance professionnelle</option>
+                <option value="4" data-i18n="proj4_name">Aide médicale d'urgence</option>
+                <option value="7" data-i18n="proj_general">Là où le besoin est le plus urgent</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label data-i18n="lbl_amount">Montant <span class="req">*</span></label>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-outline btn-sm">25 €</button>
+                <button type="button" class="btn btn-outline btn-sm">50 €</button>
+                <button type="button" class="btn btn-outline btn-sm">100 €</button>
+                <button type="button" class="btn btn-outline btn-sm">250 €</button>
+              </div>
+            </div>
+            <div class="field full">
+              <label for="montant" data-i18n="lbl_other_amount">Autre montant</label>
+              <input type="number" id="montant" name="montant" placeholder="Montant en €" min="1" required data-i18n-placeholder="ph_amount_eur">
+            </div>
+          </div>
+          <div class="form-nav-actions">
+            <a href="projets.html" class="btn btn-outline" data-i18n="btn_view_projects">Voir les projets</a>
+            <button type="submit" class="btn btn-gold" data-i18n="btn_confirm_fund">Confirmer le financement</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span data-i18n="footer_rights">© 2026 több segítséget. Tous droits réservés.</span>
+      <span><a href="#" data-i18n="footer_privacy">Politique de confidentialité</a><a href="#" data-i18n="footer_terms">Conditions d'utilisation</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/nav.js"></script>
+<script>
+document.querySelectorAll('.form-main .btn-outline.btn-sm').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.getElementById('montant').value = parseInt(btn.textContent);
+    document.querySelectorAll('.form-main .btn-outline.btn-sm').forEach(function(b){ b.classList.remove('btn-navy'); b.classList.add('btn-outline'); });
+    btn.classList.remove('btn-outline'); btn.classList.add('btn-navy');
+  });
+});
+
+document.getElementById('donForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const errBox = document.getElementById('donError');
+  const okBox = document.getElementById('donSuccess');
+  errBox.style.display = 'none';
+  okBox.style.display = 'none';
+  try {
+    await apiPost('submit-financement.php', {
+      project_id: document.getElementById('projet').value,
+      amount: document.getElementById('montant').value
+    });
+    okBox.textContent = t("msg_fund_success");
+    okBox.style.display = 'block';
+    this.reset();
+  } catch (err) {
+    errBox.textContent = err.message;
+    errBox.style.display = 'block';
+  }
+});
+</script>
+</body>
+</html>

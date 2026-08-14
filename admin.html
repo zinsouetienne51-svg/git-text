@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administration — Több Segítséget</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.admin-table{width:100%;border-collapse:collapse;font-size:0.85rem;}
+.admin-table th{text-align:left;padding:10px 12px;color:var(--ink-soft);font-weight:600;border-bottom:1px solid var(--line);}
+.admin-table td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+.admin-table select, .admin-table input{padding:6px 8px;border-radius:6px;border:1px solid var(--line);font-size:0.8rem;}
+.admin-section{background:var(--white);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:32px;overflow-x:auto;}
+.admin-section h3{margin-bottom:16px;font-size:1.05rem;}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:0.72rem;font-weight:700;}
+.badge-en_attente{background:#fdf3dd;color:#8a6a1c;}
+.badge-en_cours{background:#e5eefb;color:#2c5da0;}
+.badge-acceptee{background:#e9f4ee;color:#2c6b4a;}
+.badge-refusee{background:#fdecec;color:#9c2b2b;}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 10c-6 0-10 5-10 10 0 9 10 15 20 22 10-7 20-13 20-22 0-5-4-10-10-10-4 0-7.5 2.2-10 6-2.5-3.8-6-6-10-6z" fill="#0F2A47"/>
+        <path d="M24 22c4-5 8-8 12-8 4.5 0 8 3.3 8 8 0 6.5-6.5 11-14 16" fill="none" stroke="#C89B3C" stroke-width="0" />
+        <circle cx="34" cy="12" r="7" fill="#C89B3C" opacity="0.9"/>
+      </svg>
+      <span class="brand-text">
+        <span class="top">több</span>
+        <span class="bottom">segítséget</span>
+      </span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" data-i18n="nav_home">Accueil</a>
+      <a href="apropos.html" data-i18n="nav_about">À propos</a>
+      <a href="demander-aide.html" data-i18n="nav_ask">Demander une aide</a>
+      <a href="financement.html" data-i18n="nav_fund">Faire un financement</a>
+      <a href="projets.html" data-i18n="nav_projects">Projets</a>
+      <a href="temoignages.html" data-i18n="nav_testimonials">Témoignages</a>
+      <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+      <a href="contact.html" data-i18n="nav_contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="dashboard.html" class="btn btn-gold btn-sm" data-i18n="nav_account">Espace personnel</a>
+      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="breadcrumb">Accueil / Administration</span>
+    <h1>Panneau d'administration</h1>
+    <p id="adminGreeting">Vérification des droits…</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <div class="dash-kpis" id="adminStats" style="margin-bottom:36px;">
+      <div class="kpi-card"><span>Utilisateurs</span><strong id="statUsers">–</strong></div>
+      <div class="kpi-card"><span>Demandes en attente</span><strong id="statPending">–</strong></div>
+      <div class="kpi-card"><span>Total collecté</span><strong id="statRaised">–</strong></div>
+    </div>
+
+    <div class="admin-section">
+      <h3>Demandes d'aide</h3>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Demandeur</th><th>Type</th><th>Situation</th><th>Montant demandé</th>
+            <th>Statut</th><th>Montant accordé</th><th>Déposée le</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="requestsBody">
+          <tr><td colspan="8">Chargement…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="admin-section">
+      <h3>Financements récents</h3>
+      <table class="admin-table">
+        <thead><tr><th>Projet</th><th>Montant</th><th>Donateur</th><th>Date</th></tr></thead>
+        <tbody id="financementsBody"><tr><td colspan="4">Chargement…</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="admin-section">
+      <h3>Messages de contact</h3>
+      <table class="admin-table">
+        <thead><tr><th>Nom</th><th>Email</th><th>Sujet</th><th>Message</th><th>Date</th></tr></thead>
+        <tbody id="messagesBody"><tr><td colspan="5">Chargement…</td></tr></tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span data-i18n="footer_rights">© 2026 több segítséget. Tous droits réservés.</span>
+      <span><a href="#" data-i18n="footer_privacy">Politique de confidentialité</a><a href="#" data-i18n="footer_terms">Conditions d'utilisation</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/nav.js"></script>
+<script>
+const statusLabels = {
+  en_attente: 'En attente', en_cours: 'En cours', acceptee: 'Acceptée', refusee: 'Refusée'
+};
+
+(async function initAdmin(){
+  let user;
+  try {
+    user = await requireAuth();
+  } catch (e) { return; }
+  if (!user) return;
+
+  if (!user.is_admin) {
+    document.querySelector('.page-hero .container').innerHTML =
+      '<h1>Accès refusé</h1><p>Cette page est réservée aux administrateurs.</p>';
+    document.querySelector('.section .container').innerHTML = '';
+    return;
+  }
+
+  document.getElementById('adminGreeting').textContent = 'Connecté en tant que ' + user.full_name + '.';
+
+  try {
+    const data = await apiGet('admin-data.php');
+
+    document.getElementById('statUsers').textContent = data.stats.total_users;
+    document.getElementById('statPending').textContent = data.stats.pending_requests;
+    document.getElementById('statRaised').textContent = Number(data.stats.total_raised).toLocaleString('fr-FR') + ' €';
+
+    document.getElementById('requestsBody').innerHTML = data.requests.map(function(r){
+      return '<tr data-id="' + r.id + '">' +
+        '<td>' + r.full_name + '<br><span style="color:var(--ink-soft);font-size:0.75rem;">' + r.email + '</span></td>' +
+        '<td>' + r.request_type + '</td>' +
+        '<td style="max-width:220px;">' + (r.situation || '—') + '</td>' +
+        '<td>' + (r.amount_requested ? Number(r.amount_requested).toLocaleString('fr-FR') + ' €' : '—') + '</td>' +
+        '<td><select class="status-select">' +
+          Object.keys(statusLabels).map(function(s){
+            return '<option value="' + s + '"' + (s === r.status ? ' selected' : '') + '>' + statusLabels[s] + '</option>';
+          }).join('') +
+        '</select></td>' +
+        '<td><input type="number" class="amount-input" value="' + (r.amount_granted || '') + '" placeholder="€" style="width:90px;"></td>' +
+        '<td>' + new Date(r.created_at).toLocaleDateString('fr-FR') + '</td>' +
+        '<td><button class="btn btn-gold btn-sm save-btn">Enregistrer</button></td>' +
+      '</tr>';
+    }).join('') || '<tr><td colspan="8">Aucune demande.</td></tr>';
+
+    document.querySelectorAll('#requestsBody .save-btn').forEach(function(btn){
+      btn.addEventListener('click', async function(){
+        const row = btn.closest('tr');
+        const id = row.dataset.id;
+        const status = row.querySelector('.status-select').value;
+        const amount = row.querySelector('.amount-input').value;
+        btn.textContent = '...';
+        try {
+          await apiPost('admin-update-request.php', { request_id: id, status: status, amount_granted: amount });
+          btn.textContent = '✓ Enregistré';
+        } catch (err) {
+          btn.textContent = 'Erreur';
+          alert(err.message);
+        }
+        setTimeout(function(){ btn.textContent = 'Enregistrer'; }, 1500);
+      });
+    });
+
+    document.getElementById('financementsBody').innerHTML = data.financements.map(function(f){
+      return '<tr>' +
+        '<td>' + f.project_name + '</td>' +
+        '<td>' + Number(f.amount).toLocaleString('fr-FR') + ' €</td>' +
+        '<td>' + (f.donor_name || 'Anonyme') + (f.donor_email ? '<br><span style="color:var(--ink-soft);font-size:0.75rem;">' + f.donor_email + '</span>' : '') + '</td>' +
+        '<td>' + new Date(f.created_at).toLocaleDateString('fr-FR') + '</td>' +
+      '</tr>';
+    }).join('') || '<tr><td colspan="4">Aucun financement.</td></tr>';
+
+    document.getElementById('messagesBody').innerHTML = data.messages.map(function(m){
+      return '<tr>' +
+        '<td>' + m.full_name + '</td>' +
+        '<td>' + m.email + '</td>' +
+        '<td>' + (m.subject || '—') + '</td>' +
+        '<td style="max-width:260px;">' + m.message + '</td>' +
+        '<td>' + new Date(m.created_at).toLocaleDateString('fr-FR') + '</td>' +
+      '</tr>';
+    }).join('') || '<tr><td colspan="5">Aucun message.</td></tr>';
+
+  } catch (err) {
+    document.querySelector('.section .container').innerHTML =
+      '<p style="color:#9c2b2b;">' + err.message + '</p>';
+  }
+})();
+</script>
+</body>
+</html>

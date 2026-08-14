@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demander une aide — Több Segítséget</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 10c-6 0-10 5-10 10 0 9 10 15 20 22 10-7 20-13 20-22 0-5-4-10-10-10-4 0-7.5 2.2-10 6-2.5-3.8-6-6-10-6z" fill="#0F2A47"/>
+        <circle cx="34" cy="12" r="7" fill="#C89B3C" opacity="0.9"/>
+      </svg>
+      <span class="brand-text"><span class="top">több</span><span class="bottom">segítséget</span></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" data-i18n="nav_home">Accueil</a>
+      <a href="apropos.html" data-i18n="nav_about">À propos</a>
+      <a href="demander-aide.html" class="active" data-i18n="nav_ask">Demander une aide</a>
+      <a href="financement.html" data-i18n="nav_fund">Faire un financement</a>
+      <a href="projets.html" data-i18n="nav_projects">Projets</a>
+      <a href="temoignages.html" data-i18n="nav_testimonials">Témoignages</a>
+      <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+      <a href="contact.html" data-i18n="nav_contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="dashboard.html" class="btn btn-gold btn-sm" data-i18n="nav_account">Espace personnel</a>
+      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="breadcrumb"><span data-i18n="nav_home">Accueil</span> / <span data-i18n="nav_ask">Demander une aide</span></span>
+    <h1 data-i18n="ph_ask_title">Demander une aide</h1>
+    <p data-i18n="ph_ask_sub">Votre situation semble simple. Remplissez ce formulaire en toute sécurité et en toute confidentialité.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="form-shell">
+      <aside class="form-side">
+        <h3 data-i18n="ph_ask_title">Demander une aide</h3>
+        <p data-i18n="ph_ask_sub">Votre situation semble simple. Remplissez ce formulaire en toute sécurité et en toute confidentialité.</p>
+        <ul class="form-steps">
+          <li class="active"><span class="num">1</span> <span data-i18n="ask_step1">Informations personnelles</span></li>
+          <li><span class="num">2</span> <span data-i18n="ask_step2">Situation et besoins</span></li>
+          <li><span class="num">3</span> <span data-i18n="ask_step3">Documents justificatifs</span></li>
+          <li><span class="num">4</span> <span data-i18n="ask_step4">Validation</span></li>
+        </ul>
+      </aside>
+
+      <div class="form-main">
+        <h3 data-i18n="ask_step1">Informations personnelles</h3>
+        <div id="aideError" style="display:none;background:#fdecec;color:#9c2b2b;padding:10px 14px;border-radius:8px;font-size:0.85rem;margin-bottom:16px;"></div>
+        <div id="aideSuccess" style="display:none;background:#e9f4ee;color:#2c6b4a;padding:10px 14px;border-radius:8px;font-size:0.85rem;margin-bottom:16px;"></div>
+        <form id="aideForm">
+          <div class="field-grid">
+            <div class="field full">
+              <label for="nom" data-i18n="lbl_fullname">Nom complet <span class="req">*</span></label>
+              <input type="text" id="nom" name="nom" placeholder="Votre nom" data-i18n-placeholder="ph_yourname" required>
+            </div>
+            <div class="field">
+              <label for="email" data-i18n="lbl_email">Email <span class="req">*</span></label>
+              <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+            </div>
+            <div class="field">
+              <label for="tel" data-i18n="lbl_phone">Téléphone <span class="req">*</span></label>
+              <input type="tel" id="tel" name="tel" placeholder="+229 XX XX XX XX" required>
+            </div>
+            <div class="field full">
+              <label for="type" data-i18n="lbl_reqtype">Type de demande <span class="req">*</span></label>
+              <select id="type" name="type" required>
+                <option value="" data-i18n="opt_select">Sélectionner</option>
+                <option value="particulier" data-i18n="opt_individual">Particulier</option>
+                <option value="entreprise" data-i18n="opt_company">Entreprise</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="situation" data-i18n="lbl_situation">Décrivez votre situation et vos besoins <span class="req">*</span></label>
+              <textarea id="situation" name="situation" rows="4" required></textarea>
+            </div>
+            <div class="field full">
+              <label for="montant" data-i18n="lbl_amount_wanted">Montant souhaité (€)</label>
+              <input type="number" id="montant" name="montant" min="1" placeholder="Ex : 2000" data-i18n-placeholder="ph_amount_ex">
+            </div>
+          </div>
+          <div class="form-nav-actions">
+            <a href="index.html" class="btn btn-outline" data-i18n="btn_cancel">Annuler</a>
+            <button type="submit" class="btn btn-gold" data-i18n="btn_send_request">Envoyer ma demande</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span data-i18n="footer_rights">© 2026 több segítséget. Tous droits réservés.</span>
+      <span><a href="#" data-i18n="footer_privacy">Politique de confidentialité</a><a href="#" data-i18n="footer_terms">Conditions d'utilisation</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/nav.js"></script>
+<script>
+// Il faut être connecté pour déposer une demande.
+(async function(){
+  const user = await requireAuth();
+  if (!user) return;
+  document.getElementById('nom').value = user.full_name;
+  document.getElementById('email').value = user.email;
+})();
+
+document.getElementById('aideForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const errBox = document.getElementById('aideError');
+  const okBox = document.getElementById('aideSuccess');
+  errBox.style.display = 'none';
+  okBox.style.display = 'none';
+  try {
+    await apiPost('submit-aide.php', {
+      type: document.getElementById('type').value,
+      situation: document.getElementById('situation').value,
+      amount: document.getElementById('montant').value
+    });
+    okBox.textContent = t("msg_ask_success");
+    okBox.style.display = 'block';
+    document.getElementById('situation').value = '';
+    document.getElementById('montant').value = '';
+  } catch (err) {
+    errBox.textContent = err.message;
+    errBox.style.display = 'block';
+  }
+});
+</script>
+</body>
+</html>

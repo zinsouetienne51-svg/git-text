@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tableau de bord — Espace personnel — Több Segítséget</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 10c-6 0-10 5-10 10 0 9 10 15 20 22 10-7 20-13 20-22 0-5-4-10-10-10-4 0-7.5 2.2-10 6-2.5-3.8-6-6-10-6z" fill="#0F2A47"/>
+        <circle cx="34" cy="12" r="7" fill="#C89B3C" opacity="0.9"/>
+      </svg>
+      <span class="brand-text"><span class="top">több</span><span class="bottom">segítséget</span></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" data-i18n="nav_home">Accueil</a>
+      <a href="apropos.html" data-i18n="nav_about">À propos</a>
+      <a href="demander-aide.html" data-i18n="nav_ask">Demander une aide</a>
+      <a href="financement.html" data-i18n="nav_fund">Faire un financement</a>
+      <a href="projets.html" data-i18n="nav_projects">Projets</a>
+      <a href="temoignages.html" data-i18n="nav_testimonials">Témoignages</a>
+      <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+      <a href="contact.html" data-i18n="nav_contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="dashboard.html" class="btn btn-gold btn-sm" data-i18n="nav_account">Espace personnel</a>
+      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="breadcrumb">Accueil / Espace personnel</span>
+    <h1>Tableau de bord</h1>
+    <p>Suivez vos demandes, vos aides reçues et les dernières mises à jour de votre dossier.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="dash-shell">
+      <aside class="dash-side">
+        <div class="u">
+          <div class="av" id="userAvatar">?</div>
+          <div><strong id="userName">…</strong><span id="userType">…</span></div>
+        </div>
+        <nav class="dash-nav">
+          <a href="dashboard.html" class="active">📊 <span data-i18n="dash_nav_home">Tableau de bord</span></a>
+          <a href="demander-aide.html">📄 <span data-i18n="dash_nav_new">Nouvelle demande</span></a>
+          <a href="contact.html">💬 <span data-i18n="dash_nav_messages">Messages</span></a>
+          <a href="#" style="opacity:0.5;cursor:default;" onclick="return false;" title="Bientôt disponible">🗂️ <span data-i18n="dash_nav_docs">Documents (bientôt)</span></a>
+          <a href="dashboard.html">🔔 <span data-i18n="dash_nav_tracking">Suivi des aides</span></a>
+          <a href="#" style="opacity:0.5;cursor:default;" onclick="return false;" title="Bientôt disponible">👤 <span data-i18n="dash_nav_profile">Profil (bientôt)</span></a>
+          <a href="#" id="logoutLink">⏻ <span data-i18n="dash_nav_logout">Déconnexion</span></a>
+        </nav>
+      </aside>
+
+      <div class="dash-main">
+        <h3 data-i18n="dash_nav_home">Tableau de bord</h3>
+        <div class="dash-kpis">
+          <div class="kpi-card"><span data-i18n="kpi_requests">Demandes</span><strong id="kpiTotal">–</strong><span data-i18n="kpi_total_label">Au total</span></div>
+          <div class="kpi-card"><span data-i18n="kpi_received">Aides reçues</span><strong id="kpiAccepted">–</strong><span data-i18n="kpi_accepted_label">Acceptées</span></div>
+          <div class="kpi-card"><span data-i18n="kpi_total_amount">Montant total</span><strong id="kpiAmount">–</strong><span data-i18n="kpi_granted_label">Attribué</span></div>
+        </div>
+
+        <h4 style="font-family:var(--font-body);color:var(--navy);font-size:0.95rem;margin-bottom:14px;" data-i18n="dash_updates_title">Dernières mises à jour</h4>
+        <div class="updates-list" id="updatesList">
+          <p style="font-size:0.85rem;">Chargement…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span data-i18n="footer_rights">© 2026 több segítséget. Tous droits réservés.</span>
+      <span><a href="#" data-i18n="footer_privacy">Politique de confidentialité</a><a href="#" data-i18n="footer_terms">Conditions d'utilisation</a></span>
+    </div>
+  </div>
+</footer>
+<script src="js/api.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/nav.js"></script>
+<script>
+const statusIcons = { en_attente: '…', en_cours: '…', acceptee: '✓', refusee: '✕' };
+
+(async function initDashboard(){
+  const user = await requireAuth();
+  if (!user) return;
+
+  document.getElementById('userName').textContent = user.full_name;
+  document.getElementById('userType').textContent = user.user_type === 'entreprise' ? 'Entreprise' : 'Particulier';
+  document.getElementById('userAvatar').textContent = user.full_name.charAt(0).toUpperCase();
+
+  if (user.is_admin) {
+    const adminLink = document.createElement('a');
+    adminLink.href = 'admin.html';
+    adminLink.textContent = '🛠️ Panneau admin';
+    document.querySelector('.dash-nav').prepend(adminLink);
+  }
+
+  document.getElementById('logoutLink').addEventListener('click', async function(e){
+    e.preventDefault();
+    await apiPost('logout.php', {});
+    window.location.href = 'login.html';
+  });
+
+  try {
+    const data = await apiGet('dashboard-data.php');
+    document.getElementById('kpiTotal').textContent = data.kpis.total_requests;
+    document.getElementById('kpiAccepted').textContent = data.kpis.accepted_requests;
+    document.getElementById('kpiAmount').textContent =
+      data.kpis.total_amount.toLocaleString('fr-FR') + ' €';
+
+    const list = document.getElementById('updatesList');
+    if (data.updates.length === 0) {
+      list.innerHTML = '<p style="font-size:0.85rem;">Aucune demande pour le moment. <a href="demander-aide.html" style="color:var(--gold);font-weight:600;">Déposer une demande</a></p>';
+      return;
+    }
+    list.innerHTML = data.updates.map(function(u){
+      const date = new Date(u.date).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+      return '<div class="update-row">' +
+        '<div class="update-dot">' + (statusIcons[u.status] || '•') + '</div>' +
+        '<div><strong>' + u.title + '</strong><p>' + (u.amount ? u.amount.toLocaleString('fr-FR') + ' €' : 'Montant non défini') + '</p></div>' +
+        '<time>' + date + '</time>' +
+      '</div>';
+    }).join('');
+  } catch (err) {
+    document.getElementById('updatesList').innerHTML =
+      '<p style="font-size:0.85rem;color:#9c2b2b;">' + err.message + '</p>';
+  }
+})();
+</script>
+</body>
+</html>

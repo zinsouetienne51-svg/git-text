@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connexion — Több Segítséget</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 10c-6 0-10 5-10 10 0 9 10 15 20 22 10-7 20-13 20-22 0-5-4-10-10-10-4 0-7.5 2.2-10 6-2.5-3.8-6-6-10-6z" fill="#0F2A47"/>
+        <path d="M24 22c4-5 8-8 12-8 4.5 0 8 3.3 8 8 0 6.5-6.5 11-14 16" fill="none" stroke="#C89B3C" stroke-width="0" />
+        <circle cx="34" cy="12" r="7" fill="#C89B3C" opacity="0.9"/>
+      </svg>
+      <span class="brand-text">
+        <span class="top">több</span>
+        <span class="bottom">segítséget</span>
+      </span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" data-i18n="nav_home">Accueil</a>
+      <a href="apropos.html" data-i18n="nav_about">À propos</a>
+      <a href="demander-aide.html" data-i18n="nav_ask">Demander une aide</a>
+      <a href="financement.html" data-i18n="nav_fund">Faire un financement</a>
+      <a href="projets.html" data-i18n="nav_projects">Projets</a>
+      <a href="temoignages.html" data-i18n="nav_testimonials">Témoignages</a>
+      <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+      <a href="contact.html" data-i18n="nav_contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="dashboard.html" class="btn btn-gold btn-sm" data-i18n="nav_account">Espace personnel</a>
+      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="section" style="padding-top:60px;">
+  <div class="container" style="max-width:440px;">
+    <div class="value-card" style="text-align:left;padding:36px;">
+      <h2 style="font-size:1.4rem;margin-bottom:6px;" data-i18n="login_title">Connexion</h2>
+      <p style="margin-bottom:24px;" data-i18n="login_sub">Accédez à votre espace personnel.</p>
+
+      <div id="loginError" style="display:none;background:#fdecec;color:#9c2b2b;padding:10px 14px;border-radius:8px;font-size:0.85rem;margin-bottom:16px;"></div>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="email" data-i18n="lbl_email">Email <span class="req">*</span></label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="field">
+          <label for="password" data-i18n="lbl_password">Mot de passe <span class="req">*</span></label>
+          <div class="password-field">
+            <input type="password" id="password" required>
+            <button type="button" class="password-toggle" data-target="password" aria-label="Afficher le mot de passe">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="icon-eye">
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/>
+              </svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="icon-eye-off" style="display:none;">
+                <path d="M3 3l18 18M10.6 10.6a3 3 0 004.24 4.24M9.5 5.1A10.4 10.4 0 0112 5c6.5 0 10 7 10 7a13.6 13.6 0 01-3.1 4M6.2 6.2A13.6 13.6 0 002 12s3.5 7 10 7c1.3 0 2.5-.2 3.6-.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-gold btn-block" data-i18n="btn_login">Se connecter</button>
+      </form>
+
+      <p style="margin-top:18px;font-size:0.85rem;text-align:center;">
+        <span data-i18n="no_account_yet">Pas encore de compte ?</span> <a href="register.html" style="color:var(--gold);font-weight:600;" data-i18n="btn_create_account">Créer un compte</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span data-i18n="footer_rights">© 2026 több segítséget. Tous droits réservés.</span>
+      <span><a href="#" data-i18n="footer_privacy">Politique de confidentialité</a><a href="#" data-i18n="footer_terms">Conditions d'utilisation</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/nav.js"></script>
+<script>
+document.querySelectorAll('.password-toggle').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    const input = document.getElementById(btn.dataset.target);
+    const showing = input.type === 'text';
+    input.type = showing ? 'password' : 'text';
+    btn.querySelector('.icon-eye').style.display = showing ? '' : 'none';
+    btn.querySelector('.icon-eye-off').style.display = showing ? 'none' : '';
+    btn.setAttribute('aria-label', showing ? 'Afficher le mot de passe' : 'Masquer le mot de passe');
+  });
+});
+</script>
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const errBox = document.getElementById('loginError');
+  errBox.style.display = 'none';
+  try {
+    const res = await apiPost('login.php', {
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value
+    });
+    window.location.href = res.user.is_admin ? 'admin.html' : 'dashboard.html';
+  } catch (err) {
+    errBox.textContent = err.message;
+    errBox.style.display = 'block';
+  }
+});
+</script>
+</body>
+</html>
