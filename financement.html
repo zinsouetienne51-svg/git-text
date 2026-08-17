@@ -59,7 +59,7 @@
       <div class="form-main">
         <h3 data-i18n="fund_step1">Montant & projet</h3>
         <div id="donError" style="display:none;background:#fdecec;color:#9c2b2b;padding:10px 14px;border-radius:8px;font-size:0.85rem;margin-bottom:16px;"></div>
-        <div id="donSuccess" style="display:none;background:#e9f4ee;color:#2c6b4a;padding:10px 14px;border-radius:8px;font-size:0.85rem;margin-bottom:16px;"></div>
+        <div id="donSuccess" style="display:none;background:#e9f4ee;color:#2c6b4a;padding:16px 18px;border-radius:10px;font-size:0.85rem;margin-bottom:16px;"></div>
         <form id="donForm">
           <div class="field-grid">
             <div class="field full">
@@ -86,12 +86,32 @@
               <label for="montant" data-i18n="lbl_other_amount">Autre montant</label>
               <input type="number" id="montant" name="montant" placeholder="Montant en €" min="1" required data-i18n-placeholder="ph_amount_eur">
             </div>
+            <div class="field full">
+              <label data-i18n="lbl_payment_method">Mode de paiement</label>
+              <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--cream-deep);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="12" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M3 8l9-5 9 5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 12v4M12 12v4M17 12v4" stroke="currentColor" stroke-width="1.6"/></svg>
+                <span data-i18n="payment_method_bank">Virement bancaire — coordonnées fournies après validation</span>
+              </div>
+            </div>
           </div>
           <div class="form-nav-actions">
             <a href="projets.html" class="btn btn-outline" data-i18n="btn_view_projects">Voir les projets</a>
-            <button type="submit" class="btn btn-gold" data-i18n="btn_confirm_fund">Confirmer le financement</button>
+            <button type="submit" class="btn btn-gold" data-i18n="btn_confirm_fund">Obtenir les coordonnées bancaires</button>
           </div>
         </form>
+
+        <div id="bankPanel" style="display:none;margin-top:24px;padding:22px;border-radius:var(--radius);background:var(--cream-deep);border:1px solid var(--line);">
+          <h4 style="font-size:1rem;margin-bottom:12px;" data-i18n="bank_panel_title">Coordonnées pour votre virement</h4>
+          <p style="font-size:0.85rem;margin-bottom:16px;" data-i18n="bank_panel_sub">Effectuez votre virement avec ces coordonnées, en indiquant impérativement la référence ci-dessous dans le libellé. Votre don sera comptabilisé dès réception confirmée par notre équipe.</p>
+          <table style="width:100%;font-size:0.88rem;border-collapse:collapse;">
+            <tr><td style="padding:6px 0;color:var(--ink-soft);" data-i18n="bank_lbl_holder">Titulaire</td><td id="bankHolder" style="padding:6px 0;font-weight:600;color:var(--navy);"></td></tr>
+            <tr><td style="padding:6px 0;color:var(--ink-soft);" data-i18n="bank_lbl_bank">Banque</td><td id="bankName" style="padding:6px 0;font-weight:600;color:var(--navy);"></td></tr>
+            <tr><td style="padding:6px 0;color:var(--ink-soft);">IBAN</td><td id="bankIban" style="padding:6px 0;font-weight:600;color:var(--navy);"></td></tr>
+            <tr><td style="padding:6px 0;color:var(--ink-soft);">BIC / SWIFT</td><td id="bankBic" style="padding:6px 0;font-weight:600;color:var(--navy);"></td></tr>
+            <tr><td style="padding:6px 0;color:var(--ink-soft);" data-i18n="bank_lbl_amount">Montant</td><td id="bankAmount" style="padding:6px 0;font-weight:600;color:var(--navy);"></td></tr>
+            <tr><td style="padding:6px 0;color:var(--ink-soft);" data-i18n="bank_lbl_reference">Référence à indiquer</td><td id="bankReference" style="padding:6px 0;font-weight:700;color:var(--gold);"></td></tr>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -124,17 +144,31 @@ document.getElementById('donForm').addEventListener('submit', async function(e){
   const okBox = document.getElementById('donSuccess');
   errBox.style.display = 'none';
   okBox.style.display = 'none';
+  document.getElementById('bankPanel').style.display = 'none';
+  const submitBtn = this.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
   try {
-    await apiPost('submit-financement.php', {
+    const res = await apiPost('submit-financement.php', {
       project_id: document.getElementById('projet').value,
       amount: document.getElementById('montant').value
     });
     okBox.textContent = t("msg_fund_success");
     okBox.style.display = 'block';
-    this.reset();
+
+    document.getElementById('bankHolder').textContent = res.bank.holder;
+    document.getElementById('bankName').textContent = res.bank.bank;
+    document.getElementById('bankIban').textContent = res.bank.iban;
+    document.getElementById('bankBic').textContent = res.bank.bic;
+    document.getElementById('bankAmount').textContent =
+      Number(document.getElementById('montant').value).toLocaleString('fr-FR') + ' €';
+    document.getElementById('bankReference').textContent = res.reference_code;
+    document.getElementById('bankPanel').style.display = 'block';
+    document.getElementById('bankPanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } catch (err) {
     errBox.textContent = err.message;
     errBox.style.display = 'block';
+  } finally {
+    submitBtn.disabled = false;
   }
 });
 </script>

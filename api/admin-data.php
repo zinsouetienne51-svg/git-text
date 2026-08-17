@@ -13,10 +13,10 @@ $requests = $pdo->query(
 )->fetchAll();
 
 $financements = $pdo->query(
-    "SELECT f.id, f.amount, f.donor_name, f.donor_email, f.created_at, p.name AS project_name
+    "SELECT f.id, f.amount, f.donor_name, f.donor_email, f.reference_code, f.status, f.created_at, p.name AS project_name
      FROM financements f
      JOIN projects p ON p.id = f.project_id
-     ORDER BY f.created_at DESC LIMIT 50"
+     ORDER BY (f.status = 'en_attente') DESC, f.created_at DESC LIMIT 50"
 )->fetchAll();
 
 $messages = $pdo->query(
@@ -28,7 +28,8 @@ $stats = $pdo->query(
     "SELECT
         (SELECT COUNT(*) FROM users) AS total_users,
         (SELECT COUNT(*) FROM aide_requests WHERE status = 'en_attente') AS pending_requests,
-        (SELECT COALESCE(SUM(amount),0) FROM financements) AS total_raised"
+        (SELECT COUNT(*) FROM financements WHERE status = 'en_attente') AS pending_financements,
+        (SELECT COALESCE(SUM(amount),0) FROM financements WHERE status = 'confirme') AS total_raised"
 )->fetch();
 
 json_response([

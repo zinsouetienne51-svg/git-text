@@ -17,6 +17,7 @@
 .badge-en_cours{background:#e5eefb;color:#2c5da0;}
 .badge-acceptee{background:#e9f4ee;color:#2c6b4a;}
 .badge-refusee{background:#fdecec;color:#9c2b2b;}
+.badge-confirme{background:#e9f4ee;color:#2c6b4a;}
 </style>
 </head>
 <body>
@@ -65,7 +66,32 @@
     <div class="dash-kpis" id="adminStats" style="margin-bottom:36px;">
       <div class="kpi-card"><span>Utilisateurs</span><strong id="statUsers">–</strong></div>
       <div class="kpi-card"><span>Demandes en attente</span><strong id="statPending">–</strong></div>
-      <div class="kpi-card"><span>Total collecté</span><strong id="statRaised">–</strong></div>
+      <div class="kpi-card"><span>Virements en attente</span><strong id="statPendingFund">–</strong></div>
+      <div class="kpi-card"><span>Total collecté (confirmé)</span><strong id="statRaised">–</strong></div>
+    </div>
+
+    <div class="admin-section">
+      <h3>Coordonnées bancaires affichées aux donateurs</h3>
+      <div id="bankSettingsMsg" style="display:none;font-size:0.85rem;margin-bottom:12px;"></div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Titulaire du compte</label>
+          <input type="text" id="setHolder">
+        </div>
+        <div class="field">
+          <label>Banque</label>
+          <input type="text" id="setBank">
+        </div>
+        <div class="field">
+          <label>IBAN</label>
+          <input type="text" id="setIban">
+        </div>
+        <div class="field">
+          <label>BIC / SWIFT</label>
+          <input type="text" id="setBic">
+        </div>
+      </div>
+      <button type="button" id="saveBankBtn" class="btn btn-gold btn-sm">Enregistrer les coordonnées</button>
     </div>
 
     <div class="admin-section">
@@ -84,10 +110,10 @@
     </div>
 
     <div class="admin-section">
-      <h3>Financements récents</h3>
+      <h3>Financements (virements bancaires)</h3>
       <table class="admin-table">
-        <thead><tr><th>Projet</th><th>Montant</th><th>Donateur</th><th>Date</th></tr></thead>
-        <tbody id="financementsBody"><tr><td colspan="4">Chargement…</td></tr></tbody>
+        <thead><tr><th>Projet</th><th>Montant</th><th>Référence</th><th>Donateur</th><th>Statut</th><th>Date</th><th></th></tr></thead>
+        <tbody id="financementsBody"><tr><td colspan="7">Chargement…</td></tr></tbody>
       </table>
     </div>
 
@@ -136,10 +162,42 @@ const statusLabels = {
   document.getElementById('adminGreeting').textContent = 'Connecté en tant que ' + user.full_name + '.';
 
   try {
+    const bank = await apiGet('bank-details.php');
+    document.getElementById('setHolder').value = bank.holder || '';
+    document.getElementById('setBank').value = bank.bank || '';
+    document.getElementById('setIban').value = bank.iban || '';
+    document.getElementById('setBic').value = bank.bic || '';
+  } catch (e) { /* pas bloquant */ }
+
+  document.getElementById('saveBankBtn').addEventListener('click', async function(){
+    const msg = document.getElementById('bankSettingsMsg');
+    this.disabled = true;
+    try {
+      await apiPost('admin-update-bank.php', {
+        holder: document.getElementById('setHolder').value,
+        bank: document.getElementById('setBank').value,
+        iban: document.getElementById('setIban').value,
+        bic: document.getElementById('setBic').value
+      });
+      msg.textContent = 'Coordonnées enregistrées.';
+      msg.style.color = '#2c6b4a';
+      msg.style.display = 'block';
+    } catch (err) {
+      msg.textContent = err.message;
+      msg.style.color = '#9c2b2b';
+      msg.style.display = 'block';
+    } finally {
+      this.disabled = false;
+      setTimeout(function(){ msg.style.display = 'none'; }, 3000);
+    }
+  });
+
+  try {
     const data = await apiGet('admin-data.php');
 
     document.getElementById('statUsers').textContent = data.stats.total_users;
     document.getElementById('statPending').textContent = data.stats.pending_requests;
+    document.getElementById('statPendingFund').textContent = data.stats.pending_financements;
     document.getElementById('statRaised').textContent = Number(data.stats.total_raised).toLocaleString('fr-FR') + ' €';
 
     document.getElementById('requestsBody').innerHTML = data.requests.map(function(r){
@@ -177,14 +235,36 @@ const statusLabels = {
       });
     });
 
+    const finStatusLabels = { en_attente: 'En attente', confirme: 'Confirmé' };
     document.getElementById('financementsBody').innerHTML = data.financements.map(function(f){
+      const badge = '<span class="badge badge-' + f.status + '">' + (finStatusLabels[f.status] || f.status) + '</span>';
+      const action = f.status === 'en_attente'
+        ? '<button class="btn btn-gold btn-sm confirm-fund-btn" data-id="' + f.id + '">Confirmer reçu</button>'
+        : '—';
       return '<tr>' +
         '<td>' + f.project_name + '</td>' +
         '<td>' + Number(f.amount).toLocaleString('fr-FR') + ' €</td>' +
+        '<td>' + (f.reference_code || '—') + '</td>' +
         '<td>' + (f.donor_name || 'Anonyme') + (f.donor_email ? '<br><span style="color:var(--ink-soft);font-size:0.75rem;">' + f.donor_email + '</span>' : '') + '</td>' +
+        '<td>' + badge + '</td>' +
         '<td>' + new Date(f.created_at).toLocaleDateString('fr-FR') + '</td>' +
+        '<td>' + action + '</td>' +
       '</tr>';
-    }).join('') || '<tr><td colspan="4">Aucun financement.</td></tr>';
+    }).join('') || '<tr><td colspan="7">Aucun financement.</td></tr>';
+
+    document.querySelectorAll('.confirm-fund-btn').forEach(function(btn){
+      btn.addEventListener('click', async function(){
+        btn.textContent = '...';
+        try {
+          await apiPost('admin-confirm-financement.php', { financement_id: btn.dataset.id });
+          btn.textContent = '✓ Confirmé';
+          btn.disabled = true;
+        } catch (err) {
+          btn.textContent = 'Erreur';
+          alert(err.message);
+        }
+      });
+    });
 
     document.getElementById('messagesBody').innerHTML = data.messages.map(function(m){
       return '<tr>' +

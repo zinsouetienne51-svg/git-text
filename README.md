@@ -69,3 +69,26 @@ visiteurs en cliquant sur FR, puis revenir au hongrois avec HU.
 
 Après réimport de `api/schema.sql`, le compte admin (`admin@tobbsegitseg.hu` /
 `Admin@2026`) verra le sélecteur HU/FR en se connectant.
+
+## Mode de paiement : virement bancaire
+
+La page **Faire un financement** propose désormais le virement bancaire comme mode
+de paiement :
+
+1. Le donateur choisit un projet et un montant, puis clique sur "Obtenir les
+   coordonnées bancaires".
+2. Le site affiche les coordonnées (titulaire, banque, IBAN, BIC) **et une référence
+   unique** (ex. `DON-A1B2C3`) que le donateur doit indiquer dans le libellé de son
+   virement.
+3. Le don est enregistré en base avec le statut "en attente" — **le montant n'est
+   pas encore ajouté au total du projet**.
+4. Une fois le virement reçu sur le compte bancaire réel (à vérifier manuellement,
+   par exemple via le relevé bancaire), l'admin va dans le panneau admin, retrouve
+   le don grâce à sa référence, et clique sur "Confirmer reçu". Le montant est alors
+   ajouté au total du projet.
+
+**⚠️ À faire avant mise en production : remplacer les coordonnées bancaires
+placeholder.** Après avoir réimporté `api/schema.sql`, connecte-toi en admin et va
+dans la section "Coordonnées bancaires affichées aux donateurs" du panneau admin
+pour saisir le vrai titulaire, la vraie banque, le vrai IBAN et le vrai BIC. Tant que
+ce n'est pas fait, le site affichera "À compléter" aux donateurs.

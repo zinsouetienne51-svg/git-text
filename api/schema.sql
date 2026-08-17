@@ -23,11 +23,11 @@ CREATE TABLE IF NOT EXISTS users (
 ) ENGINE=InnoDB;
 
 -- Compte administrateur de départ.
--- Email : admin@gmail.com   /   Mot de passe : Admin@2026
+-- Email : admin@tobbsegitseg.hu   /   Mot de passe : Admin@2026
 -- (à changer une fois connecté — pas d'interface pour ça pour l'instant,
 --  il faudrait ré-exécuter password_hash() et faire un UPDATE en SQL)
 INSERT INTO users (full_name, email, password_hash, user_type, is_admin) VALUES
-('Administrateur', 'admin@gmail.com', '$2y$10$UIACOpVskAVc0oXYXCliCuqP.1CqqeThoijnd9i3QEcnwWvJR.8Ci', 'particulier', 1);
+('Administrateur', 'admin@tobbsegitseg.hu', '$2y$10$UIACOpVskAVc0oXYXCliCuqP.1CqqeThoijnd9i3QEcnwWvJR.8Ci', 'particulier', 1);
 
 -- ---------------- Demandes d'aide ----------------
 CREATE TABLE IF NOT EXISTS aide_requests (
@@ -72,8 +72,11 @@ CREATE TABLE IF NOT EXISTS financements (
   donor_name VARCHAR(150) DEFAULT NULL,
   donor_email VARCHAR(150) DEFAULT NULL,
   amount DECIMAL(10,2) NOT NULL,
-  status ENUM('en_attente','confirme') NOT NULL DEFAULT 'confirme',
+  payment_method VARCHAR(30) NOT NULL DEFAULT 'virement',
+  reference_code VARCHAR(20) NOT NULL,
+  status ENUM('en_attente','confirme') NOT NULL DEFAULT 'en_attente',
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  confirmed_at DATETIME DEFAULT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
   FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -99,3 +102,12 @@ CREATE TABLE IF NOT EXISTS site_settings (
 -- Langue par défaut du site : hongrois. Seul un compte admin peut la
 -- repasser en français (bouton FR/HU visible uniquement pour lui).
 INSERT INTO site_settings (setting_key, setting_value) VALUES ('site_lang', 'hu');
+
+-- Coordonnées bancaires affichées sur la page "Faire un financement".
+-- À REMPLACER par les vraies coordonnées (modifiable ensuite dans la table
+-- site_settings, ou directement en base via phpMyAdmin).
+INSERT INTO site_settings (setting_key, setting_value) VALUES
+  ('bank_holder', 'TÖBB SEGÍTSÉGET'),
+  ('bank_name', 'À compléter (nom de la banque)'),
+  ('bank_iban', 'À compléter (IBAN)'),
+  ('bank_bic', 'À compléter (BIC / SWIFT)');

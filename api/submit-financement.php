@@ -25,21 +25,32 @@ if (!$stmt->fetch()) {
 
 $userId = $_SESSION['user_id'] ?? null;
 
-$pdo->beginTransaction();
-try {
-    $stmt = $pdo->prepare(
-        'INSERT INTO financements (user_id, project_id, donor_name, donor_email, amount, status)
-         VALUES (?, ?, ?, ?, ?, "confirme")'
-    );
-    $stmt->execute([$userId, $projectId, $donorName ?: null, $donorEmail ?: null, $amount]);
+// Référence unique à indiquer dans le libellé du virement, pour que l'admin
+// puisse rapprocher le virement reçu de ce don précis.
+$referenceCode = 'DON-' . strtoupper(substr(bin2hex(random_bytes(4)), 0, 6));
 
-    $stmt = $pdo->prepare('UPDATE projects SET raised_amount = raised_amount + ? WHERE id = ?');
-    $stmt->execute([$amount, $projectId]);
+// Le don est créé "en_attente" : le montant n'est ajouté au projet qu'une fois
+// le virement confirmé par l'admin (voir api/admin-confirm-financement.php).
+$stmt = $pdo->prepare(
+    'INSERT INTO financements (user_id, project_id, donor_name, donor_email, amount, payment_method, reference_code, status)
+     VALUES (?, ?, ?, ?, ?, "virement", ?, "en_attente")'
+);
+$stmt->execute([$userId, $projectId, $donorName ?: null, $donorEmail ?: null, $amount, $referenceCode]);
 
-    $pdo->commit();
-} catch (Exception $e) {
-    $pdo->rollBack();
-    json_response(['error' => 'Le financement n\'a pas pu être enregistré.'], 500);
-}
+$bankStmt = $pdo->query(
+    "SELECT setting_key, setting_value FROM site_settings WHERE setting_key IN
+     ('bank_holder','bank_name','bank_iban','bank_bic')"
+);
+$bankRows = $bankStmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
-json_response(['success' => true]);
+json_response([
+    'success' => true,
+    'reference_code' => $referenceCode,
+    'bank' => [
+        'holder' => $bankRows['bank_holder'] ?? '',
+        'bank' => $bankRows['bank_name'] ?? '',
+        'iban' => $bankRows['bank_iban'] ?? '',
+        'bic' => $bankRows['bank_bic'] ?? '',
+    ],
+]);
+
