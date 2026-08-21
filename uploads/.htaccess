@@ -1,0 +1,5 @@
+# Empêche l'exécution de scripts dans ce dossier — uniquement des fichiers statiques.
+<FilesMatch "\.(php|php3|php4|php5|phtml|pl|py|cgi|sh)$">
+  Require all denied
+</FilesMatch>
+Options -Indexes

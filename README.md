@@ -92,3 +92,29 @@ placeholder.** Après avoir réimporté `api/schema.sql`, connecte-toi en admin 
 dans la section "Coordonnées bancaires affichées aux donateurs" du panneau admin
 pour saisir le vrai titulaire, la vraie banque, le vrai IBAN et le vrai BIC. Tant que
 ce n'est pas fait, le site affichera "À compléter" aux donateurs.
+
+## Documents et Profil (espace personnel)
+
+Les deux liens "Documents (bientôt)" et "Profil (bientôt)" du tableau de bord sont
+maintenant de vraies pages fonctionnelles.
+
+### Documents (`documents.html`)
+- L'utilisateur connecté peut envoyer des fichiers justificatifs (PDF, JPG, PNG, DOC,
+  DOCX — 5 Mo max par fichier).
+- Les fichiers sont stockés dans `/uploads/documents/` sous un nom généré
+  aléatoirement (jamais le nom d'origine), avec un `.htaccess` qui empêche
+  l'exécution de scripts dans ce dossier (sécurité de base).
+- Chaque utilisateur ne voit et ne peut supprimer que **ses propres** documents.
+- Le téléchargement passe par `api/download-document.php`, qui vérifie que le
+  document appartient bien à l'utilisateur connecté avant de le servir.
+
+### Profil (`profil.html`)
+- Modification du nom complet et du téléphone.
+- Changement de mot de passe optionnel (il faut fournir le mot de passe actuel pour
+  le changer — vérifié côté serveur).
+- L'email n'est pas modifiable pour l'instant (affiché en lecture seule).
+
+**⚠️ Après réimport de `api/schema.sql`**, la table `documents` est créée
+automatiquement. Vérifie aussi que le dossier `uploads/documents/` existe bien à la
+racine du site et qu'il est accessible en écriture par le serveur PHP (normalement
+automatique sous XAMPP en local).

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil — Espace personnel — Több Segítséget</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 10c-6 0-10 5-10 10 0 9 10 15 20 22 10-7 20-13 20-22 0-5-4-10-10-10-4 0-7.5 2.2-10 6-2.5-3.8-6-6-10-6z" fill="#0F2A47"/>
+        <circle cx="34" cy="12" r="7" fill="#C89B3C" opacity="0.9"/>
+      </svg>
+      <span class="brand-text"><span class="top">több</span><span class="bottom">segítséget</span></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" data-i18n="nav_home">Accueil</a>
+      <a href="apropos.html" data-i18n="nav_about">À propos</a>
+      <a href="demander-aide.html" data-i18n="nav_ask">Demander une aide</a>
+      <a href="financement.html" data-i18n="nav_fund">Faire un financement</a>
+      <a href="projets.html" data-i18n="nav_projects">Projets</a>
+      <a href="temoignages.html" data-i18n="nav_testimonials">Témoignages</a>
+      <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+      <a href="contact.html" data-i18n="nav_contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="dashboard.html" class="btn btn-gold btn-sm" data-i18n="nav_account">Espace personnel</a>
+      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="breadcrumb">Accueil / Profil</span>
+    <h1 data-i18n="profile_title">Mon profil</h1>
+    <p data-i18n="profile_sub">Modifiez vos informations personnelles et votre mot de passe.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="dash-shell">
+      <aside class="dash-side">
+        <div class="u">
+          <div class="av" id="userAvatar">?</div>
+          <div><strong id="userNameSide">…</strong><span id="userType">…</span></div>
+        </div>
+        <nav class="dash-nav">
+          <a href="dashboard.html">📊 <span data-i18n="dash_nav_home">Tableau de bord</span></a>
+          <a href="demander-aide.html">📄 <span data-i18n="dash_nav_new">Nouvelle demande</span></a>
+          <a href="contact.html">💬 <span data-i18n="dash_nav_messages">Messages</span></a>
+          <a href="documents.html">🗂️ <span data-i18n="dash_nav_docs">Documents</span></a>
+          <a href="dashboard.html">🔔 <span data-i18n="dash_nav_tracking">Suivi des aides</span></a>
+          <a href="profil.html" class="active">👤 <span data-i18n="dash_nav_profile">Profil</span></a>
+          <a href="#" id="logoutLink">⏻ <span data-i18n="dash_nav_logout">Déconnexion</span></a>
+        </nav>
+      </aside>
+
+      <div class="dash-main">
+        <h3 data-i18n="profile_info_title">Informations personnelles</h3>
+        <div id="profileError" style="display:none;background:#fdecec;color:#9c2b2b;padding:10px 14px;border-radius:8px;font-size:0.85rem;margin-bottom:16px;"></div>
+        <div id="profileSuccess" style="display:none;background:#e9f4ee;color:#2c6b4a;padding:10px 14px;border-radius:8px;font-size:0.85rem;margin-bottom:16px;"></div>
+
+        <form id="profileForm">
+          <div class="field-grid">
+            <div class="field">
+              <label for="fullName" data-i18n="lbl_fullname">Nom complet</label>
+              <input type="text" id="fullName" required>
+            </div>
+            <div class="field">
+              <label data-i18n="lbl_email">Email</label>
+              <input type="email" id="emailDisplay" disabled style="opacity:0.6;">
+            </div>
+            <div class="field full">
+              <label for="phone" data-i18n="lbl_phone">Téléphone</label>
+              <input type="tel" id="phone">
+            </div>
+          </div>
+
+          <h3 style="margin-top:8px;" data-i18n="profile_password_title">Changer le mot de passe (optionnel)</h3>
+          <div class="field-grid">
+            <div class="field">
+              <label for="currentPassword" data-i18n="profile_current_pw">Mot de passe actuel</label>
+              <div class="password-field">
+                <input type="password" id="currentPassword" autocomplete="current-password">
+                <button type="button" class="password-toggle" data-target="currentPassword" aria-label="Afficher le mot de passe">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="icon-eye">
+                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/>
+                  </svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="icon-eye-off" style="display:none;">
+                    <path d="M3 3l18 18M10.6 10.6a3 3 0 004.24 4.24M9.5 5.1A10.4 10.4 0 0112 5c6.5 0 10 7 10 7a13.6 13.6 0 01-3.1 4M6.2 6.2A13.6 13.6 0 002 12s3.5 7 10 7c1.3 0 2.5-.2 3.6-.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="newPassword" data-i18n="profile_new_pw">Nouveau mot de passe</label>
+              <div class="password-field">
+                <input type="password" id="newPassword" minlength="6" autocomplete="new-password">
+                <button type="button" class="password-toggle" data-target="newPassword" aria-label="Afficher le mot de passe">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="icon-eye">
+                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/>
+                  </svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="icon-eye-off" style="display:none;">
+                    <path d="M3 3l18 18M10.6 10.6a3 3 0 004.24 4.24M9.5 5.1A10.4 10.4 0 0112 5c6.5 0 10 7 10 7a13.6 13.6 0 01-3.1 4M6.2 6.2A13.6 13.6 0 002 12s3.5 7 10 7c1.3 0 2.5-.2 3.6-.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="confirmPassword" data-i18n="profile_confirm_pw">Confirmer le mot de passe</label>
+              <div class="password-field">
+                <input type="password" id="confirmPassword" minlength="6" autocomplete="new-password">
+                <button type="button" class="password-toggle" data-target="confirmPassword" aria-label="Afficher le mot de passe">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="icon-eye">
+                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/>
+                  </svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="icon-eye-off" style="display:none;">
+                    <path d="M3 3l18 18M10.6 10.6a3 3 0 004.24 4.24M9.5 5.1A10.4 10.4 0 0112 5c6.5 0 10 7 10 7a13.6 13.6 0 01-3.1 4M6.2 6.2A13.6 13.6 0 002 12s3.5 7 10 7c1.3 0 2.5-.2 3.6-.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-nav-actions">
+            <a href="dashboard.html" class="btn btn-outline" data-i18n="btn_cancel">Annuler</a>
+            <button type="submit" class="btn btn-gold" data-i18n="profile_save_btn">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span data-i18n="footer_rights">© 2026 több segítséget. Tous droits réservés.</span>
+      <span><a href="#" data-i18n="footer_privacy">Politique de confidentialité</a><a href="#" data-i18n="footer_terms">Conditions d'utilisation</a></span>
+    </div>
+  </div>
+</footer>
+<script src="js/api.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/nav.js"></script>
+<script>
+(async function initProfile(){
+  const user = await requireAuth();
+  if (!user) return;
+
+  document.getElementById('userNameSide').textContent = user.full_name;
+  document.getElementById('userType').textContent = user.user_type === 'entreprise' ? 'Entreprise' : 'Particulier';
+  document.getElementById('userAvatar').textContent = user.full_name.charAt(0).toUpperCase();
+
+  document.getElementById('fullName').value = user.full_name;
+  document.getElementById('emailDisplay').value = user.email;
+  document.getElementById('phone').value = user.phone || '';
+
+  if (user.is_admin) {
+    const adminLink = document.createElement('a');
+    adminLink.href = 'admin.html';
+    adminLink.textContent = '🛠️ Panneau admin';
+    document.querySelector('.dash-nav').prepend(adminLink);
+  }
+
+  document.getElementById('logoutLink').addEventListener('click', async function(e){
+    e.preventDefault();
+    await apiPost('logout.php', {});
+    window.location.href = 'login.html';
+  });
+
+  document.getElementById('profileForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const errBox = document.getElementById('profileError');
+    const okBox = document.getElementById('profileSuccess');
+    errBox.style.display = 'none';
+    okBox.style.display = 'none';
+
+    const newPassword = document.getElementById('newPassword').value;
+    const currentPassword = document.getElementById('currentPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (newPassword && !currentPassword) {
+      errBox.textContent = 'Indique ton mot de passe actuel pour le changer.';
+      errBox.style.display = 'block';
+      return;
+    }
+
+    if (newPassword && newPassword !== confirmPassword) {
+      errBox.textContent = 'Les deux mots de passe ne correspondent pas.';
+      errBox.style.display = 'block';
+      return;
+    }
+
+    try {
+      await apiPost('update-profile.php', {
+        full_name: document.getElementById('fullName').value,
+        phone: document.getElementById('phone').value,
+        current_password: currentPassword,
+        new_password: newPassword
+      });
+      okBox.textContent = 'Profil mis à jour.';
+      okBox.style.display = 'block';
+      document.getElementById('currentPassword').value = '';
+      document.getElementById('newPassword').value = '';
+      document.getElementById('confirmPassword').value = '';
+    } catch (err) {
+      errBox.textContent = err.message;
+      errBox.style.display = 'block';
+    }
+  });
+})();
+
+document.querySelectorAll('.password-toggle').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    const input = document.getElementById(btn.dataset.target);
+    const showing = input.type === 'text';
+    input.type = showing ? 'password' : 'text';
+    btn.querySelector('.icon-eye').style.display = showing ? '' : 'none';
+    btn.querySelector('.icon-eye-off').style.display = showing ? 'none' : '';
+    btn.setAttribute('aria-label', showing ? 'Afficher le mot de passe' : 'Masquer le mot de passe');
+  });
+});
+</script>
+</body>
+</html>

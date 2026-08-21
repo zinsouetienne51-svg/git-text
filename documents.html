@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documents — Espace personnel — Több Segítséget</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 10c-6 0-10 5-10 10 0 9 10 15 20 22 10-7 20-13 20-22 0-5-4-10-10-10-4 0-7.5 2.2-10 6-2.5-3.8-6-6-10-6z" fill="#0F2A47"/>
+        <circle cx="34" cy="12" r="7" fill="#C89B3C" opacity="0.9"/>
+      </svg>
+      <span class="brand-text"><span class="top">több</span><span class="bottom">segítséget</span></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" data-i18n="nav_home">Accueil</a>
+      <a href="apropos.html" data-i18n="nav_about">À propos</a>
+      <a href="demander-aide.html" data-i18n="nav_ask">Demander une aide</a>
+      <a href="financement.html" data-i18n="nav_fund">Faire un financement</a>
+      <a href="projets.html" data-i18n="nav_projects">Projets</a>
+      <a href="temoignages.html" data-i18n="nav_testimonials">Témoignages</a>
+      <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+      <a href="contact.html" data-i18n="nav_contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="dashboard.html" class="btn btn-gold btn-sm" data-i18n="nav_account">Espace personnel</a>
+      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="breadcrumb">Accueil / Documents</span>
+    <h1 data-i18n="docs_title">Mes documents</h1>
+    <p data-i18n="docs_sub">Ajoutez vos justificatifs (pièce d'identité, factures, preuves de situation) pour appuyer vos demandes d'aide.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="dash-shell">
+      <aside class="dash-side">
+        <div class="u">
+          <div class="av" id="userAvatar">?</div>
+          <div><strong id="userName">…</strong><span id="userType">…</span></div>
+        </div>
+        <nav class="dash-nav">
+          <a href="dashboard.html">📊 <span data-i18n="dash_nav_home">Tableau de bord</span></a>
+          <a href="demander-aide.html">📄 <span data-i18n="dash_nav_new">Nouvelle demande</span></a>
+          <a href="contact.html">💬 <span data-i18n="dash_nav_messages">Messages</span></a>
+          <a href="documents.html" class="active">🗂️ <span data-i18n="dash_nav_docs">Documents</span></a>
+          <a href="dashboard.html">🔔 <span data-i18n="dash_nav_tracking">Suivi des aides</span></a>
+          <a href="profil.html">👤 <span data-i18n="dash_nav_profile">Profil</span></a>
+          <a href="#" id="logoutLink">⏻ <span data-i18n="dash_nav_logout">Déconnexion</span></a>
+        </nav>
+      </aside>
+
+      <div class="dash-main">
+        <h3 data-i18n="docs_upload_title">Ajouter un document</h3>
+        <div id="uploadError" style="display:none;background:#fdecec;color:#9c2b2b;padding:10px 14px;border-radius:8px;font-size:0.85rem;margin-bottom:16px;"></div>
+        <div id="uploadSuccess" style="display:none;background:#e9f4ee;color:#2c6b4a;padding:10px 14px;border-radius:8px;font-size:0.85rem;margin-bottom:16px;"></div>
+
+        <form id="uploadForm" style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:32px;">
+          <div class="field" style="margin-bottom:0;flex:1;min-width:220px;">
+            <label for="fileInput" data-i18n="docs_choose_file">Fichier (PDF, JPG, PNG, DOC — 5 Mo max)</label>
+            <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" required>
+          </div>
+          <button type="submit" class="btn btn-gold" data-i18n="docs_upload_btn">Envoyer</button>
+        </form>
+
+        <h4 style="font-family:var(--font-body);color:var(--navy);font-size:0.95rem;margin-bottom:14px;" data-i18n="docs_list_title">Mes fichiers</h4>
+        <div class="updates-list" id="docsList">
+          <p style="font-size:0.85rem;" data-i18n="docs_loading">Chargement…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span data-i18n="footer_rights">© 2026 több segítséget. Tous droits réservés.</span>
+      <span><a href="#" data-i18n="footer_privacy">Politique de confidentialité</a><a href="#" data-i18n="footer_terms">Conditions d'utilisation</a></span>
+    </div>
+  </div>
+</footer>
+<script src="js/api.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/nav.js"></script>
+<script>
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' o';
+  if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + ' Ko';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' Mo';
+}
+
+async function loadDocs() {
+  const list = document.getElementById('docsList');
+  try {
+    const data = await apiGet('list-documents.php');
+    if (data.documents.length === 0) {
+      list.innerHTML = '<p style="font-size:0.85rem;" data-i18n="docs_empty">Aucun document envoyé pour le moment.</p>';
+      applyI18n();
+      return;
+    }
+    list.innerHTML = data.documents.map(function(d){
+      const date = new Date(d.uploaded_at).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+      return '<div class="update-row">' +
+        '<div class="update-dot">📎</div>' +
+        '<div><strong>' + d.original_name + '</strong><p>' + formatSize(d.size_bytes) + '</p></div>' +
+        '<div style="display:flex;gap:8px;align-items:center;">' +
+          '<a href="api/download-document.php?id=' + d.id + '" class="btn btn-outline btn-sm" target="_blank">⬇</a>' +
+          '<button class="btn btn-outline btn-sm delete-doc-btn" data-id="' + d.id + '" style="color:#9c2b2b;border-color:#9c2b2b;">✕</button>' +
+        '</div>' +
+        '<time>' + date + '</time>' +
+      '</div>';
+    }).join('');
+
+    document.querySelectorAll('.delete-doc-btn').forEach(function(btn){
+      btn.addEventListener('click', async function(){
+        if (!confirm('Supprimer ce document ?')) return;
+        try {
+          await apiPost('delete-document.php', { document_id: btn.dataset.id });
+          loadDocs();
+        } catch (err) {
+          alert(err.message);
+        }
+      });
+    });
+  } catch (err) {
+    list.innerHTML = '<p style="font-size:0.85rem;color:#9c2b2b;">' + err.message + '</p>';
+  }
+}
+
+(async function initDocuments(){
+  const user = await requireAuth();
+  if (!user) return;
+
+  document.getElementById('userName').textContent = user.full_name;
+  document.getElementById('userType').textContent = user.user_type === 'entreprise' ? 'Entreprise' : 'Particulier';
+  document.getElementById('userAvatar').textContent = user.full_name.charAt(0).toUpperCase();
+
+  if (user.is_admin) {
+    const adminLink = document.createElement('a');
+    adminLink.href = 'admin.html';
+    adminLink.textContent = '🛠️ Panneau admin';
+    document.querySelector('.dash-nav').prepend(adminLink);
+  }
+
+  document.getElementById('logoutLink').addEventListener('click', async function(e){
+    e.preventDefault();
+    await apiPost('logout.php', {});
+    window.location.href = 'login.html';
+  });
+
+  document.getElementById('uploadForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const errBox = document.getElementById('uploadError');
+    const okBox = document.getElementById('uploadSuccess');
+    errBox.style.display = 'none';
+    okBox.style.display = 'none';
+
+    const fileInput = document.getElementById('fileInput');
+    if (!fileInput.files.length) return;
+
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+
+    try {
+      const res = await fetch('api/upload-document.php', {
+        method: 'POST',
+        credentials: 'include',
+        body: formData
+      });
+      const json = await res.json().catch(function(){ return {}; });
+      if (!res.ok) throw new Error(json.error || 'Erreur lors de l\'envoi.');
+
+      okBox.textContent = 'Document envoyé avec succès.';
+      okBox.style.display = 'block';
+      fileInput.value = '';
+      loadDocs();
+    } catch (err) {
+      errBox.textContent = err.message;
+      errBox.style.display = 'block';
+    }
+  });
+
+  loadDocs();
+})();
+</script>
+</body>
+</html>

@@ -6,7 +6,7 @@ if (empty($_SESSION['user_id'])) {
 }
 
 $pdo = get_pdo();
-$stmt = $pdo->prepare('SELECT id, full_name, email, user_type, is_admin FROM users WHERE id = ?');
+$stmt = $pdo->prepare('SELECT id, full_name, email, phone, user_type, is_admin FROM users WHERE id = ?');
 $stmt->execute([$_SESSION['user_id']]);
 $user = $stmt->fetch();
 

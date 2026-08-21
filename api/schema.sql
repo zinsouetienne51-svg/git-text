@@ -23,11 +23,11 @@ CREATE TABLE IF NOT EXISTS users (
 ) ENGINE=InnoDB;
 
 -- Compte administrateur de départ.
--- Email : admin@tobbsegitseg.hu   /   Mot de passe : Admin@2026
+-- Email : admin@gmail.com   /   Mot de passe : Admin@2026
 -- (à changer une fois connecté — pas d'interface pour ça pour l'instant,
 --  il faudrait ré-exécuter password_hash() et faire un UPDATE en SQL)
 INSERT INTO users (full_name, email, password_hash, user_type, is_admin) VALUES
-('Administrateur', 'admin@tobbsegitseg.hu', '$2y$10$UIACOpVskAVc0oXYXCliCuqP.1CqqeThoijnd9i3QEcnwWvJR.8Ci', 'particulier', 1);
+('Administrateur', 'admin@gmail.com', '$2y$10$UIACOpVskAVc0oXYXCliCuqP.1CqqeThoijnd9i3QEcnwWvJR.8Ci', 'particulier', 1);
 
 -- ---------------- Demandes d'aide ----------------
 CREATE TABLE IF NOT EXISTS aide_requests (
@@ -42,6 +42,19 @@ CREATE TABLE IF NOT EXISTS aide_requests (
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------- Documents justificatifs ----------------
+CREATE TABLE IF NOT EXISTS documents (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  request_id INT DEFAULT NULL,
+  original_name VARCHAR(255) NOT NULL,
+  stored_name VARCHAR(255) NOT NULL,
+  size_bytes INT NOT NULL,
+  uploaded_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (request_id) REFERENCES aide_requests(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 -- ---------------- Projets (financement) ----------------

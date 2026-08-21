@@ -204,9 +204,9 @@ const I18N = {
     dash_nav_home: "Tableau de bord",
     dash_nav_new: "Nouvelle demande",
     dash_nav_messages: "Messages",
-    dash_nav_docs: "Documents (bientôt)",
+    dash_nav_docs: "Documents",
     dash_nav_tracking: "Suivi des aides",
-    dash_nav_profile: "Profil (bientôt)",
+    dash_nav_profile: "Profil",
     dash_nav_logout: "Déconnexion",
     kpi_requests: "Demandes",
     kpi_total_label: "Au total",
@@ -215,6 +215,25 @@ const I18N = {
     kpi_total_amount: "Montant total",
     kpi_granted_label: "Attribué",
     dash_updates_title: "Dernières mises à jour",
+
+    // Documents
+    docs_title: "Mes documents",
+    docs_sub: "Ajoutez vos justificatifs (pièce d'identité, factures, preuves de situation) pour appuyer vos demandes d'aide.",
+    docs_upload_title: "Ajouter un document",
+    docs_choose_file: "Fichier (PDF, JPG, PNG, DOC — 5 Mo max)",
+    docs_upload_btn: "Envoyer",
+    docs_list_title: "Mes fichiers",
+    docs_loading: "Chargement…",
+    docs_empty: "Aucun document envoyé pour le moment.",
+
+    // Profil
+    profile_title: "Mon profil",
+    profile_sub: "Modifiez vos informations personnelles et votre mot de passe.",
+    profile_info_title: "Informations personnelles",
+    profile_password_title: "Changer le mot de passe (optionnel)",
+    profile_current_pw: "Mot de passe actuel",
+    profile_new_pw: "Nouveau mot de passe",
+    profile_save_btn: "Enregistrer",
   },
 
   hu: {
@@ -414,9 +433,9 @@ const I18N = {
     dash_nav_home: "Irányítópult",
     dash_nav_new: "Új kérelem",
     dash_nav_messages: "Üzenetek",
-    dash_nav_docs: "Dokumentumok (hamarosan)",
+    dash_nav_docs: "Dokumentumok",
     dash_nav_tracking: "Támogatások nyomon követése",
-    dash_nav_profile: "Profil (hamarosan)",
+    dash_nav_profile: "Profil",
     dash_nav_logout: "Kijelentkezés",
     kpi_requests: "Kérelmek",
     kpi_total_label: "Összesen",
@@ -425,6 +444,25 @@ const I18N = {
     kpi_total_amount: "Teljes összeg",
     kpi_granted_label: "Odaítélve",
     dash_updates_title: "Legutóbbi frissítések",
+
+    // Dokumentumok
+    docs_title: "Dokumentumaim",
+    docs_sub: "Töltsd fel az igazoló dokumentumaidat (személyi igazolvány, számlák, igazolások) a kérelmeid alátámasztásához.",
+    docs_upload_title: "Dokumentum hozzáadása",
+    docs_choose_file: "Fájl (PDF, JPG, PNG, DOC — max. 5 MB)",
+    docs_upload_btn: "Küldés",
+    docs_list_title: "Fájljaim",
+    docs_loading: "Betöltés…",
+    docs_empty: "Még nincs feltöltött dokumentum.",
+
+    // Profil
+    profile_title: "Profilom",
+    profile_sub: "Módosítsd a személyes adataidat és a jelszavadat.",
+    profile_info_title: "Személyes adatok",
+    profile_password_title: "Jelszó módosítása (opcionális)",
+    profile_current_pw: "Jelenlegi jelszó",
+    profile_new_pw: "Új jelszó",
+    profile_save_btn: "Mentés",
   }
 };
 
